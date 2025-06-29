@@ -16,8 +16,21 @@ public class DataGenerator
 
         var res = faker.Generate(100);
 
+        var EnclosureId = 1;
+        var maxCapacity = db.Enclosures.Where(x => x.Id == EnclosureId).FirstOrDefault()?.MaxCapacity ?? 0;
+        var count = 0;
+
+
         res.ForEach(animal =>
         {
+            count = db.Animals.Where(x => x.EnclosureId == EnclosureId).Count();
+            if (maxCapacity == count)
+            {
+                EnclosureId++;
+                maxCapacity = db.Enclosures.Where(x => x.Id == EnclosureId).FirstOrDefault()?.MaxCapacity ?? 0;
+            }
+
+            animal.EnclosureId = EnclosureId;
             db.Animals.Add(animal);
             db.SaveChanges();
         });

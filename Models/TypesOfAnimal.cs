@@ -1,3 +1,4 @@
+
 public class TypeOfAnimal
 {
     public required string SpeciesName { get; set; }
