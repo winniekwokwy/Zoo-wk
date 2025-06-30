@@ -105,7 +105,7 @@ public class AnimalController : ControllerBase
 
         return result;
     }
-    
+
     [HttpGet("Search")]
 
   public IActionResult Search([FromQuery] SearchRequest searchRequest)
@@ -141,61 +141,61 @@ public class AnimalController : ControllerBase
                         EnclosureName = enclosure.Name
                 };
 
-        if (searchRequest.search != null)
-        {
-            if (!string.IsNullOrEmpty(searchRequest.search.Name))
-            {
-                query = query.Where(animal => animal.Name.ToLower().Contains(searchRequest.search.Name.ToLower()));
-            }
-
-            if (!string.IsNullOrEmpty(searchRequest.search.Species))
-            {
-                var species = _db.AllSpecies.FirstOrDefault(species => species.Name.ToLower().Contains(searchRequest.search.Species.ToLower()));
-                if (species != null)
+                if (searchRequest.search != null)
                 {
-                    query = query.Where(animal => animal.SpeciesId == species.Id);
+                    if (!string.IsNullOrEmpty(searchRequest.search.Name))
+                    {
+                        query = query.Where(animal => animal.Name.ToLower().Contains(searchRequest.search.Name.ToLower()));
+                    }
+
+                    if (!string.IsNullOrEmpty(searchRequest.search.Species))
+                    {
+                        var species = _db.AllSpecies.FirstOrDefault(species => species.Name.ToLower().Contains(searchRequest.search.Species.ToLower()));
+                        if (species != null)
+                        {
+                            query = query.Where(animal => animal.SpeciesId == species.Id);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(searchRequest.search.Enclosure))
+                    {
+                        var enclosure = _db.Enclosures.FirstOrDefault(enclosure => enclosure.Name.ToLower().Contains(searchRequest.search.Enclosure.ToLower()));
+                        if (enclosure != null)
+                        {
+                            query = query.Where(animal => animal.EnclosureId == enclosure.Id);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(searchRequest.search.Classification))
+
+                    {
+                        var classification = _db.Classifications.FirstOrDefault(classification => classification.Name.ToLower().Contains(searchRequest.search.Classification.ToLower()));
+                        if (classification != null)
+                        {
+                            var speciesIds = _db.AllSpecies
+                                            .Where(s => s.ClassificationId == classification.Id)
+                                            .Select(s => s.Id)
+                                            .ToList();
+
+                            // Filter the query by species IDs
+                            query = query.Where(animal => speciesIds.Contains(animal.SpeciesId));
+
+                        }
+                    }
+
+                    if (searchRequest.search.Age.HasValue)
+
+                    {
+                        query = query.Where(animal => animal.Age == searchRequest.search.Age);
+                    }
+                    if (searchRequest.search.DateOfacquisition.HasValue)
+
+                    {
+                        query = query.Where(animal => animal.DateofAcquisition == searchRequest.search.DateOfacquisition);
+
+                    }
                 }
-            }
-
-            if (!string.IsNullOrEmpty(searchRequest.search.Enclosure))
-            {
-                var enclosure = _db.Enclosures.FirstOrDefault(enclosure => enclosure.Name.ToLower().Contains(searchRequest.search.Enclosure.ToLower()));
-                if (enclosure != null)
-                {
-                    query = query.Where(animal => animal.EnclosureId == enclosure.Id);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(searchRequest.search.Classification))
-
-            {
-                var classification = _db.Classifications.FirstOrDefault(classification => classification.Name.ToLower().Contains(searchRequest.search.Classification.ToLower()));
-                if (classification != null)
-                {
-                    var speciesIds = _db.AllSpecies
-                                    .Where(s => s.ClassificationId == classification.Id)
-                                    .Select(s => s.Id)
-                                    .ToList();
-
-                    // Filter the query by species IDs
-                    query = query.Where(animal => speciesIds.Contains(animal.SpeciesId));
-
-                }
-            }
-
-            if (searchRequest.search.Age.HasValue)
-
-            {
-                query = query.Where(animal => animal.Age == searchRequest.search.Age);
-            }
-            if (searchRequest.search.DateOfacquisition.HasValue)
-
-            {
-                query = query.Where(animal => animal.DateofAcquisition == searchRequest.search.DateOfacquisition);
-
-            }
-        }
-    
+        
         // Dynamic sorting
         query = searchRequest.SortBy.ToLower() switch
         {

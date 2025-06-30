@@ -157,3 +157,4 @@
 /Users/winniekwok/IdeaProjects/TechSwitch/Zoo/bin/Debug/net8.0/runtimes/win-x86/native/e_sqlite3.dll
 /Users/winniekwok/IdeaProjects/TechSwitch/Zoo/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
 /Users/winniekwok/IdeaProjects/TechSwitch/Zoo/bin/Debug/net8.0/Bogus.dll
+/Users/winniekwok/IdeaProjects/TechSwitch/Zoo/obj/Debug/net8.0/Zoo.sourcelink.json
