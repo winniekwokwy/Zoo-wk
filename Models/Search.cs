@@ -11,4 +11,6 @@ public class Search
     public string? Enclosure { get; set; }
 
     public DateOnly? DateOfacquisition { get; set; }
+
+    public string? ZookeeperName { get; set; }
 }

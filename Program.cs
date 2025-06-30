@@ -22,7 +22,11 @@ using (var serviceScope = app.Services.CreateScope())
 
     if (!context.Animals.Any())
     {
-         DataGenerator.GenerateData(context);
+         DataGenerator.GenerateAnimalData(context);
+    }
+    if (!context.ZooKeepers.Any())
+    {
+        DataGenerator.GenerateZookeeperData(context);
     }
     context.Database.Migrate();
 }
