@@ -40,7 +40,7 @@ public class ZooKeeperController : ControllerBase
     public ActionResult CreateZooKeeper([FromBody] CreateZooKeeperRequest request)
     {
         
-        if (request.Name == null
+        if (string.IsNullOrEmpty(request.Name)
         || request.Enclosures == null)
         {
             return ValidationProblem("Not all required information is provided.");
